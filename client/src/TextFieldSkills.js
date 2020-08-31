@@ -23,6 +23,7 @@ export default class DropdownInput extends Component {
             isMulti
             placeholder = "Skills (Minimum 3)"
             maxMenuHeight={240}
+            
             />
       </div>
     )

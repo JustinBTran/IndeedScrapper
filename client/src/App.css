@@ -1,6 +1,7 @@
+
 .App {
   text-align: center;
-
+  background-color: #282c34;
 }
 
 .App-logo {
@@ -28,10 +29,16 @@
 .App-link {
   color: #61dafb;
 }
-.header-description{
-  padding-left : 400px;
-  padding-right : 400px;
+
+.Title{
+  color: #66ff99;
 }
+
+.css-1rhbuit-multiValue{
+  background-color: blue;
+}
+
+
 .job{
   width: 80%;
   margin: 0 auto;
@@ -43,13 +50,24 @@
   border-right: 1px solid #e3e3e3;
   padding: 0px;  
   margin-top : 15px;
+  text-decoration-color: #282c34;
 }
+.job a{
+  text-decoration-line: none;
+  color: blueviolet;
+}
+
 
 .job li{
   display: inline;
 }
 
-
+@media only screen and (min-width: 769px) {
+  .header-description{
+    padding-left : 350px;
+    padding-right : 350px;
+  }
+}
 @keyframes App-logo-spin {
   from {
     transform: rotate(0deg);
