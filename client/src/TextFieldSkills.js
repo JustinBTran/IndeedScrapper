@@ -15,7 +15,9 @@ const options = [
 ]
 
 export default class DropdownInput extends Component {
+
     render() {
+      var changeSkills = this.props.changeSkills
         return (
          <div className="dropdown">
             <CreatableSelect options={options} 
@@ -23,6 +25,7 @@ export default class DropdownInput extends Component {
             isMulti
             placeholder = "Skills (Minimum 3)"
             maxMenuHeight={240}
+            onChange = {changeSkills}
             
             />
       </div>
