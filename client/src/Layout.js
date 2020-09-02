@@ -3,7 +3,7 @@ import QueryTextInput from './TextFieldQuery';
 import DropDownInput from './TextFieldSkills';
 import Jobs from './Jobs.js';
 
-const JOB_API_URL = 'hrrp://localhost:9000/jobs'
+const JOB_API_URL = 'http://localhost:9000/jobs'
 
 const mockJobs = [
   {
@@ -45,13 +45,6 @@ export default class Layout extends Component {
         };
   }
 
-  componentDidCatch(error,errorInfo){
-      this.setState({
-          error: error,
-          errorInfo: errorInfo,
-      })
-      console.log(error)
-  }
 
   changeOption(selectedOption){
       this.setState({option: selectedOption.value})
@@ -62,13 +55,29 @@ export default class Layout extends Component {
   }
 
   async fetchJobs(){
-    try{
+    /*try{
         const jobs = fetch(JOB_API_URL)
-        const json = await jobs.json()
+        const json = await jobs.json
         console.log({json})
     }catch(error){
         console.log(error.message)
-    }
+    }*/
+    const res = await fetch(JOB_API_URL)
+    const data = await res.json()
+    await this.setState({jobs:data.jobs})
+    //console.log({data})
+  }
+
+  async submitRequest(){
+      const option = this.state.option
+      const skills = this.state.skills
+      await fetch(JOB_API_URL, {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+            body: JSON.stringify({option,skills})
+      })
   }
 
 
@@ -102,6 +111,7 @@ export default class Layout extends Component {
               },
             ]
             });*/
+            this.submitRequest();
             this.fetchJobs();
           }
          
