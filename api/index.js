@@ -12,7 +12,7 @@ app.use(function(req,res,next){
   next();
 });
 
-const mockJobs = {
+var mockJobs = {
   jobs: [{
     title: 'Junior Developer', company: 'IBM',
     location: 'Toronto, On', 
@@ -55,11 +55,11 @@ async function filterBySkills(jobsData, skills){
   var filteredJobs = [];
   var count = 1;
   for(var i = 0; i<jobsData.length;i++){
-    console.log("filtering job " + count);
+    //console.log("filtering job " + count);
     bodyText = jobsData[i].bodyText;
     foundSkills = [];
     for(var j = 0; j<skills.length;j++){
-      console.log("Checking if job has " + skills[j]);
+      //console.log("Checking if job has " + skills[j]);
       if(bodyText.indexOf(skills[j])!==-1){
         foundSkills.push(skills[j]);
       }
@@ -70,7 +70,7 @@ async function filterBySkills(jobsData, skills){
       location: jobsData[i].location,
       link: jobsData[i].link,
     }
-    console.log("foundSkills:" + foundSkills.length);
+    //console.log("foundSkills:" + foundSkills.length);
     /*if(foundSkills.length<1){
       delete jobsData[i].bodyText;
       jobsData.splice(i,i+1);
@@ -94,7 +94,9 @@ app.post('/jobs', async (req,res) =>{
   const indeedData = await scrapeIndeed(req.body.option,req.body.location)
   const indeedJobCards = await filterBySkills(indeedData,req.body.skills)
   console.log('filtering complete')
-  console.log(indeedJobCards)
+  mockJobs.jobs = indeedJobCards
+  console.log(mockJobs);
+
   res.send('success')
 })
 

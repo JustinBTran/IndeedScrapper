@@ -29,7 +29,7 @@ export default class Layout extends Component {
             location: '',
             skills: [],
             jobs: [
-                {
+                /*{
                   title: 'Junior Developer', company: 'Google',
                   location: 'Toronto, On', 
                   keyWords: ['C++','MySQL','HTML5','CSS','Javascript'],
@@ -40,8 +40,9 @@ export default class Layout extends Component {
                   location: 'Toronto, On', 
                   keyWords: ['Python','C++','MongoDB','Git','Javascript'],
                   link: "https://www.amazon.jobs/en/jobs/1033022/sde1",
-                }
+                }*/
               ]
+
         };
   }
 
@@ -51,7 +52,9 @@ export default class Layout extends Component {
       //console.log(this.state.option);
   }
   changeSkills(selectedSkills){
-    this.setState({skills:selectedSkills.map(s => s.value)})
+    if(selectedSkills!== null){
+      this.setState({skills:selectedSkills.map(s => s.value)})
+    }
   }
 
   async fetchJobs(){
@@ -80,6 +83,10 @@ export default class Layout extends Component {
       })
   }
 
+  async sendAlert(){
+    alert("Fetching jobs");
+  }
+
 
 
   render(){
@@ -99,7 +106,7 @@ export default class Layout extends Component {
           style = {{width:200}}
         />
         <DropDownInput changeSkills = {this.changeSkills.bind(this)}/>
-        <button onClick = {() => 
+        <button onClick = {async () => 
           {
               /*console.log(this.state.option);
               console.log(this.state.skills);
@@ -111,8 +118,9 @@ export default class Layout extends Component {
               },
             ]
             });*/
-            this.submitRequest();
-            this.fetchJobs();
+            alert("fetching jobs");
+            await this.submitRequest();
+            await this.fetchJobs();
           }
          
 

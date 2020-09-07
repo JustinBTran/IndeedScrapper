@@ -53,7 +53,7 @@ async function crawl(startURL){
     }
 
     await browser.close();
-    return jobLinks;
+    return returnData.jobs;
 }
 
 //get job links and loads the next page
