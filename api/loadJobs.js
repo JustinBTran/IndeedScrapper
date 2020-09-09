@@ -1,6 +1,9 @@
 DB_API_URL = 'http://localhost:9000/db';
 const fetch = require("node-fetch");
-
+const options = ['junior developer', 'software internship', 'senior developer', 
+'senior developer', 'frontend engineer', 'fullstack engineer', 'backend engineer',
+'summer analyst', 'data science', 'data science internship'
+];
 
 fetchJobs();
 async function fetchJobs(){

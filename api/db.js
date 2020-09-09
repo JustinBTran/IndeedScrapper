@@ -76,9 +76,20 @@ async function getJobsByType(jobType){
 }
 
 async function processJobsIntoDB(option,jobs){
+    
+    /*await getConnection().createQueryBuilder()
+    .delete()
+    .from(Job)
+    .where("jobType = :id", { id: option })
+    .execute() ;*/
+
+    const connection = (await getConnection());
+    connection.createQueryBuilder().delete().from(Job).where("jobType = :id", { id: option }).execute();
+    connection.close();
+    
+
   
     for(var i =0; i<jobs.length;i++){
-        
         insertJob(option, jobs[i].title, jobs[i].company, jobs[i].location, jobs[i].link, jobs[i].bodyText)
     }
 
