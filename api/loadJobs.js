@@ -7,17 +7,20 @@ const options = ['junior developer', 'software internship', 'senior developer',
 
 fetchJobs();
 async function fetchJobs(){
-    try{
-        const option = 'junior developer';
-        const location = '';
-        await fetch(DB_API_URL, {
-            method: 'POST',
-            headers: {
-              'Content-Type': 'application/json',
-            },
-              body: JSON.stringify({option,location})
-        })
-    }catch(err){
-        //console.log(err.message);
+    var option = '';
+    var location = '';
+    for(var i =0; i<options.length;i++){
+        try{
+            option = options[i];
+            await fetch(DB_API_URL, {
+                method: 'POST',
+                headers: {
+                  'Content-Type': 'application/json',
+                },
+                  body: JSON.stringify({option,location})
+            })
+        }catch(err){
+            //console.log(err.message);
+        }
     }
 }
