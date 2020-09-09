@@ -4,6 +4,8 @@ const port = 9000
 
 const bodyParser = require('body-parser');
 const indeedScrapper = require('./indeedScrapper');
+const db = require('./db');
+const { getJobsByType, processJobsIntoDB } = require('./db');
 
 app.use(bodyParser.json())
 app.use(function(req,res,next){
@@ -23,12 +25,6 @@ var mockJobs = {
     title: 'SDE 1', company: 'Microsoft',
     location: 'Toronto, On', 
     keyWords: ['Python','C++','MongoDB','Git','Javascript'],
-    link: "https://www.amazon.jobs/en/jobs/1033022/sde1",
-  },
-  {
-  title: 'SWE 1', company: 'SnapChat',
-    location: 'Paolo Alto, California', 
-    keyWords: ['Javascript','MySQL','React','Node','Express'],
     link: "https://www.amazon.jobs/en/jobs/1033022/sde1",
   }]
 
@@ -56,6 +52,7 @@ async function filterBySkills(jobsData, skills){
   var count = 1;
   for(var i = 0; i<jobsData.length;i++){
     //console.log("filtering job " + count);
+    console.log('filetering job at ' + jobsData[i].company);
     bodyText = jobsData[i].bodyText;
     foundSkills = [];
     for(var j = 0; j<skills.length;j++){
@@ -91,13 +88,24 @@ app.post('/jobs', async (req,res) =>{
   console.log(req.body.option)
   console.log(req.body.location)
   console.log(req.body.skills)
-  const indeedData = await scrapeIndeed(req.body.option,req.body.location)
-  const indeedJobCards = await filterBySkills(indeedData,req.body.skills)
+  //const indeedData = await scrapeIndeed(req.body.option,req.body.location)
+
+  const rawJobData = await getJobsByType(req.body.option);
+  console.log("found " + rawJobData.length + " jobs");
+  const indeedJobCards = await filterBySkills(rawJobData,req.body.skills)
   console.log('filtering complete')
   mockJobs.jobs = indeedJobCards
   console.log(mockJobs);
 
   res.send('success')
+})
+
+app.post('/db', async(req,res) => {
+  console.log('fetching jobs');
+  const indeedData = await scrapeIndeed(req.body.option,req.body.location)
+  await processJobsIntoDB(req.body.option,indeedData)
+  res.send('success')
+
 })
 
 
