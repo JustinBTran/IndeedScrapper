@@ -4,6 +4,8 @@ const port = 9000
 
 const bodyParser = require('body-parser');
 const indeedScrapper = require('./indeedScrapper');
+const zipScrapper = require('./zipScrapper');
+
 const db = require('./db');
 const { getJobsByType, processJobsIntoDB } = require('./db');
 
@@ -41,7 +43,13 @@ async function scrapeIndeed(option,location){
   const jobsData = await indeedScrapper.scrapeIndeed(option,location);
   console.log("indeed scrapping finished");
   return jobsData;
+}
 
+async function scrapeZip(option,location){
+  console.log("scrapping zipRecruiter");
+  const jobsData = await zipScrapper.scrapeZip(option,location);
+  console.log("zipRecruiter scrapping finished");
+  return jobsData;
 }
 
 async function filterBySkills(jobsData, skills){
