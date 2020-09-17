@@ -69,28 +69,23 @@ async function getConnection(){
 async function getJobsByType(jobType){
     console.log("getting jobs that are for " + jobType);
     const connection = await getConnection();
-    const jobRepo = connection.getRepository(Job);
+    const jobRepo = await connection.getRepository(Job);
     const jobs = await jobRepo.find({ where: { jobType : jobType} });
-    connection.close();
+    await connection.close();
     return jobs;
 }
 
-async function processJobsIntoDB(option,jobs){
-    
-    /*await getConnection().createQueryBuilder()
-    .delete()
-    .from(Job)
-    .where("jobType = :id", { id: option })
-    .execute() ;*/
-
+async function cleanDB(option){
     const connection = (await getConnection());
-    connection.createQueryBuilder().delete().from(Job).where("jobType = :id", { id: option }).execute();
-    connection.close();
-    
+    var x = await connection.createQueryBuilder().delete().from(Job).where("jobType = :id", { id: option }).execute();
+    console.log("Query returns " + x);
+    await connection.close();
+}
 
-  
+async function processJobsIntoDB(option,jobs){
+    await cleanDB(option);
     for(var i =0; i<jobs.length;i++){
-        insertJob(option, jobs[i].title, jobs[i].company, jobs[i].location, jobs[i].link, jobs[i].bodyText)
+       await insertJob(option, jobs[i].title, jobs[i].company, jobs[i].location, jobs[i].link, jobs[i].bodyText)
     }
 
 
@@ -120,15 +115,15 @@ async function insertJob(jobType,title,company,location,link,bodyText){
     job.bodyText = bodyText;
     job.link = link;
 
-    console.log("jobType: " + job.jobType);
-    console.log("title: " + job.title);
-    console.log("company: " + job.company);
+    //console.log("jobType: " + job.jobType);
+    //console.log("title: " + job.title);
+    //console.log("company: " + job.company);
 
-    const jobRepo = connection.getRepository(Job);
+    const jobRepo = await connection.getRepository(Job);
     const res = await jobRepo.save(job);
     //console.log("job saved into db");
     //maybe return new list of all jobs
-    connection.close();
+   await connection.close();
 
 }
 
